@@ -1,4 +1,5 @@
 import OrderItem from "./order_item";
+
 export default class Order {
   private _id: string;
   private _customerId: string;
@@ -9,7 +10,7 @@ export default class Order {
     this._id = id;
     this._customerId = customerId;
     this._items = items;
-    this._total = this.total();
+    this._total = this.calcularTotal();
     this.validate();
   }
 
@@ -43,7 +44,12 @@ export default class Order {
     return true;
   }
 
-  total(): number {
-    return this._items.reduce((acc, item) => acc + item.total(), 0);
+  calcularTotal(): number {
+    return this._items.reduce((acc, item) => acc + item.total, 0);
+  }
+
+  addItem(item: OrderItem): Order {
+    const newItems = [...this._items, item];
+    return new Order(this._id, this._customerId, newItems);
   }
 }
